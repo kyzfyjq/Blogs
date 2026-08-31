@@ -4,6 +4,7 @@ export class Page {
         url = null,
         title,
         label = null,
+        summary = null,
         releaseDate = null,
         lastModifiedDate = null,
         categories = [],
@@ -12,6 +13,7 @@ export class Page {
         this.url = url;
         this.title = title;
         this.label = label;
+        this.summary = summary;
         this.releaseDate = releaseDate;
         this.lastModifiedDate = lastModifiedDate;
         this.categories = categories;

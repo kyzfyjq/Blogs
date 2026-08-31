@@ -18,6 +18,7 @@ export async function extractPage(filePath, options = {}) {
     // HTML Metadata
     const title = $('meta[name="title"]').attr("content");
     const label = $('meta[name="label"]').attr("content") ?? title;
+    const summary = $('meta[name="summary"]').attr("content");
     const releaseDate = $('meta[name="releaseDate"]').attr("content");
 
     // File system metadata
@@ -31,6 +32,7 @@ export async function extractPage(filePath, options = {}) {
         url: `/src/pages/${relativePath}`,
         title,
         label,
+        summary,
         releaseDate,
         lastModifiedDate: stats.mtime.toISOString(),
         categories,
