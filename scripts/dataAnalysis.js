@@ -39,9 +39,9 @@ export async function extractPage(filePath, options = {}) {
 }
 
 async function generatePagesData() {
-    const Datas = [];
+    const pagesData = [];
 
-    Datas.push(
+    pagesData.push(
         await extractPage(homePagePath, {
             path: "index.html",
             url: "/",
@@ -49,15 +49,15 @@ async function generatePagesData() {
         }),
     );
 
-    const Paths = await getPages(pageRootDir);
+    const pagePaths = await getPages(pageRootDir);
 
-    for (const Path of Paths) {
-        const Data = await extractPage(Path);
-        Datas.push(Data);
+    for (const filePath of pagePaths) {
+        const pageData = await extractPage(filePath);
+        pagesData.push(pageData);
     }
 
     await fs.mkdir(path.dirname(outputFile), { recursive: true });
-    await fs.writeFile(outputFile, JSON.stringify(Datas, null, 4));
+    await fs.writeFile(outputFile, JSON.stringify(pagesData, null, 4));
 }
 
 generatePagesData();

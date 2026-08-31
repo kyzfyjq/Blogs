@@ -9,15 +9,15 @@ export async function getPages(pagesRootDir) {
     const pages = [];
 
     for (const entry of entries) {
-        const Path = path.join(pagesRootDir, entry.name);
+        const filePath = path.join(pagesRootDir, entry.name);
 
         if (entry.isDirectory()) {
-            pages.push(...(await getPages(Path)));
+            pages.push(...(await getPages(filePath)));
         } else if (
             entry.isFile() &&
             path.extname(entry.name).toLowerCase() === ".html"
         ) {
-            pages.push(Path);
+            pages.push(filePath);
         }
     }
 

@@ -1,7 +1,7 @@
-import Data from "../data/pagesData.json";
+import pagesDataJson from "../data/pagesData.json";
 import { Page } from "../models/page.js";
 
-const pagesData = Data.map((pageData) => new Page(pageData));
+const pagesData = pagesDataJson.map((pageData) => new Page(pageData));
 
 // Navi bar
 function createNaviLink(page) {

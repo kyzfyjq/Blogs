@@ -18,10 +18,32 @@ export default defineConfig([
         extends: ["js/recommended"],
     },
 
+    // Browser code
+    {
+        files: ["src/**/*.js"],
+        languageOptions: {
+            sourceType: "module",
+            globals: {
+                ...globals.browser,
+            },
+        },
+    },
+
+    // Node scripts and config files
+    {
+        files: ["scripts/**/*.js", "*.config.js", "vite.config.js"],
+        languageOptions: {
+            sourceType: "module",
+            globals: {
+                ...globals.node,
+            },
+        },
+    },
+
     // Vue
     ...pluginVue.configs["flat/recommended"],
     {
-        rules: {},
+        files: ["**/*.vue"],
         languageOptions: {
             sourceType: "module",
             globals: {
