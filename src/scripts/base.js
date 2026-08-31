@@ -13,12 +13,28 @@ function createNaviLink(page) {
     return link;
 }
 
-function mountNaviBar() {
-    const naviBar = document.querySelector("#navi-bar");
-
-    if (!naviBar) {
-        return;
+function getNaviBar() {
+    let naviBar = document.querySelector("#navi-bar");
+    if (naviBar) {
+        return naviBar;
     }
+
+    naviBar = document.createElement("nav");
+    naviBar.id = "navi-bar";
+
+    const layout = document.querySelector("#layout");
+    if (layout) {
+        layout.before(naviBar);
+    } else {
+        document.body.prepend(naviBar);
+    }
+
+    return naviBar;
+}
+
+function mountNaviBar() {
+    const naviBar = getNaviBar();
+    naviBar.replaceChildren();
 
     const naviPages = pagesData.filter((page) => page.isRootPage());
 
