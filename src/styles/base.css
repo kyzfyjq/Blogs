@@ -1,0 +1,25 @@
+#navi-bar {
+    display: block flex;
+    align-items: center;
+    justify-content: center;
+    border-bottom: 1px solid grey;
+    padding: 5px;
+}
+
+#navi-bar > a {
+    text-align: center;
+    margin: auto 5px;
+}
+
+#layout {
+    display: grid block;
+    grid-template: none / repeat(5, 1fr);
+}
+
+#content {
+    grid-column: 2/5;
+}
+
+header {
+    text-align: center;
+}

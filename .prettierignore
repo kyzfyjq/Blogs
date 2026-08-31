@@ -1,0 +1,4 @@
+**/pnpm-lock.yaml
+**/settings.json
+dist/**
+node_modules/**
