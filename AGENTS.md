@@ -46,6 +46,7 @@ it instead of silently modifying unrelated code.
 Keep completion summaries concise.
 
 Report:
+
 - what changed
 - what was validated
 - unresolved problems, if any
