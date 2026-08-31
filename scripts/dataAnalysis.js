@@ -8,14 +8,16 @@ import { getPages } from "./getPages.js";
 
 const pageRootDir = "./src/pages";
 const outputFile = "./src/data/pagesData.json";
+const homePagePath = "./index.html";
 
 // Node.js Only
-export async function extractPage(filePath) {
+export async function extractPage(filePath, options = {}) {
     const html = await fs.readFile(filePath, "utf8");
     const $ = load(html);
 
     // HTML Metadata
     const title = $('meta[name="title"]').attr("content");
+    const label = $('meta[name="label"]').attr("content") ?? title;
     const releaseDate = $('meta[name="releaseDate"]').attr("content");
 
     // File system metadata
@@ -26,16 +28,28 @@ export async function extractPage(filePath) {
 
     return new Page({
         path: relativePath,
+        url: `/src/pages/${relativePath}`,
         title,
+        label,
         releaseDate,
         lastModifiedDate: stats.mtime.toISOString(),
         categories,
+        ...options,
     });
 }
 
 async function generatePagesData() {
-    const Paths = await getPages(pageRootDir);
     const Datas = [];
+
+    Datas.push(
+        await extractPage(homePagePath, {
+            path: "index.html",
+            url: "/",
+            categories: [],
+        }),
+    );
+
+    const Paths = await getPages(pageRootDir);
 
     for (const Path of Paths) {
         const Data = await extractPage(Path);

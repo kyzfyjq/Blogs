@@ -8,7 +8,7 @@ function createNaviLink(page) {
     const link = document.createElement("a");
 
     link.href = page.url;
-    link.textContent = page.title;
+    link.textContent = page.label;
 
     return link;
 }
