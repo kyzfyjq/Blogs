@@ -1,5 +1,5 @@
 export default {
-    singleQuote: false,
-    tabWidth: 4,
-    printWidth: 80,
+  singleQuote: false,
+  tabWidth: 2,
+  printWidth: 150,
 };
