@@ -7,6 +7,7 @@ math-block {
 math-graph {
   display: block;
   overflow-x: auto;
+  text-align: center;
 }
 
 math-block > b {
@@ -44,4 +45,56 @@ math-block.remark {
 
 math-block.problem {
   background-color: #f3e7e7;
+}
+
+math-graph > svg {
+  display: inline-block;
+}
+
+#toc {
+  position: fixed;
+  left: 90%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  max-width: 14rem;
+  max-height: calc(100vh - 2rem);
+  overflow-y: auto;
+}
+
+#toc a {
+  --toc-depth: 0;
+
+  display: block;
+  position: relative;
+  padding-left: calc(10px + var(--toc-depth) * 1em);
+  color: inherit;
+  text-decoration: none;
+  font-size: calc(1rem - 3px);
+  overflow-wrap: anywhere;
+}
+
+#toc a::before {
+  content: "•";
+  position: absolute;
+  left: calc(var(--toc-depth) * 1em);
+}
+
+#toc a[data-level="3"] {
+  --toc-depth: 1;
+}
+
+#toc a[data-level="4"] {
+  --toc-depth: 2;
+}
+
+#toc a[data-level="5"] {
+  --toc-depth: 3;
+}
+
+#toc a[data-level="6"] {
+  --toc-depth: 4;
+}
+
+#toc a:hover {
+  text-decoration: underline;
 }
