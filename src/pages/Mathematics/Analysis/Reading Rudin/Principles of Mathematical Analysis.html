@@ -1,0 +1,162 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="title" content="Thoughts on Principles of Mathematical Analysis - Rudin" />
+    <meta name="releaseDate" content="2026-09-03" />
+
+    <link rel="stylesheet" href="/src/styles/base.css" />
+    <link rel="stylesheet" href="/src/styles/posts.css" />
+  </head>
+  <body>
+    <div id="layout">
+      <div id="content">
+        <header>
+          <h1>Thoughts on Principles of Mathematical Analysis - Rudin</h1>
+        </header>
+        <h2>Introduction</h2>
+        <math-block class="definition">
+          <b>1.5</b>
+          <p>Let \(S\) be a set. An order on \(S\) is a relation, denoted by \(\lt\), with the following two properties:</p>
+          <ul>
+            <li>
+              <b>(i).</b>
+              If \(x \in S\) and \(y \in S\), then one and only one of the statements \[ x \lt y, x = y, y \lt x \] is true.
+            </li>
+            <li>
+              <b>(ii).</b>
+              If \(x,y,z \in S\), if \(x \lt y\) and \(y \lt z\), then \(x \lt z\).
+            </li>
+          </ul>
+        </math-block>
+        <math-block class="example">
+          <b>1.5</b>
+          <ul>
+            <li>If \(X\) is a set, then \((\mathcal{P}(X), \subseteq)\) is a partially ordered set.</li>
+            <li>
+              If \(F\) is a field, then the set of monic polynomials in \(F[x]\), ordered by divisibility, is a partially ordered set.
+              <br />
+              Or we can let \(F = \mathbb{F}_{2}\)
+            </li>
+          </ul>
+        </math-block>
+        <math-block class="definition">
+          <b>1.12</b>
+          <p>
+            A <i>field</i> is a set \(\mathbb{F}\) with two operations, called <i>addition</i> and <i>multiplication</i>, which satisfy the following
+            so-called “field axioms” (A), (M), and (D):
+          </p>
+          <b>(A) Axioms for addition</b>
+          <ul>
+            <li>
+              <b>(A1)</b>
+              \(x \in \mathbb{F}\) and \(y \in \mathbb{F}\), then their sum \(x+y\) is in \(\mathbb{F}\).
+            </li>
+
+            <li>
+              <b>(A2)</b>
+              Addition is commutative: \[ x+y=y+x \] for all \(x,y\in\mathbb{F}\).
+            </li>
+
+            <li>
+              <b>(A3)</b>
+              Addition is associative: \[ (x+y)+z=x+(y+z) \] for all \(x,y,z\in\mathbb{F}\).
+            </li>
+
+            <li>
+              <b>(A4)</b>
+              \(\mathbb{F}\) contains an element \(0\) such that \[ 0+x=x \] for every \(x\in\mathbb{F}\).
+            </li>
+
+            <li>
+              <b>(A5)</b>
+              To every \(x\in\mathbb{F}\) corresponds an element \(-x\in\mathbb{F}\) such that \[ x+(-x)=0. \]
+            </li>
+          </ul>
+
+          <p><b>(M) Axioms for multiplication</b></p>
+
+          <ul>
+            <li>
+              <b>(M1)</b>
+              If \(x\in\mathbb{F}\) and \(y\in\mathbb{F}\), then their product \(xy\) is in \(\mathbb{F}\).
+            </li>
+
+            <li>
+              <b>(M2)</b>
+              Multiplication is commutative: \[ xy=yx \] for all \(x,y\in\mathbb{F}\).
+            </li>
+
+            <li>
+              <b>(M3)</b>
+              Multiplication is associative: \[ (xy)z=x(yz) \] for all \(x,y,z\in\mathbb{F}\).
+            </li>
+
+            <li>
+              <b>(M4)</b>
+              \(\mathbb{F}\) contains an element \(1\neq0\) such that \[ 1x=x \] for every \(x\in\mathbb{F}\).
+            </li>
+
+            <li>
+              <b>(M5)</b>
+              If \(x\in\mathbb{F}\) and \(x\neq0\), then there exists an element \(1/x\in\mathbb{F}\) such that \[ x\cdot(1/x)=1. \]
+            </li>
+          </ul>
+
+          <p><b>(D) The distributive law</b></p>
+
+          <p>\[ x(y+z)=xy+xz \] holds for all \(x,y,z\in\mathbb{F}\).</p>
+        </math-block>
+        <math-block class="example">
+          <b></b>
+          <ul>
+            <li>If \(p\) is a prime number, then \(\mathbb{F}_p = \mathbb{Z}/p\mathbb{Z}\) is a field.</li>
+            <li>
+              If \(\mathbb{F}\) is a field, then the rational function field \[ \mathbb{F}(t) = \left\{ \frac{f(t)}{g(t)} :
+              f(t),g(t)\in\mathbb{F}[t],\ g(t)\neq 0 \right\} \] is a field. In particular, \(\mathbb{F}_p(t)\) is a field for every prime \(p\).
+            </li>
+            <li>
+              If \(\mathbb{F}\) is a field, then the formal Laurent series field \[ \mathbb{F}((t)) = \left\{ \sum_{n=N}^{\infty} a_n t^n :
+              N\in\mathbb{Z},\ a_n\in\mathbb{F} \right\} \] is a field. In particular, \(\mathbb{F}_p((t))\) is a field for every prime \(p\).
+            </li>
+            <li>
+              For every prime \(p\) and every positive integer \(n\), there exists a finite field with exactly \(p^n\) elements, denoted by \[
+              \mathbb{F}_{p^n}. \] Moreover, every finite field has \(p^n\) elements for some prime \(p\) and positive integer \(n\).
+            </li>
+            <li>
+              A field with four elements is \[ \mathbb{F}_4 = \mathbb{F}_2[x]/(x^2+x+1). \] If \(\alpha=[x]\), then \[ \alpha^2+\alpha+1=0, \] so \[
+              \mathbb{F}_4 = \{0,1,\alpha,\alpha+1\}. \]
+            </li>
+            <li>
+              Every field \(\mathbb{F}\) can be used as a scalar field for linear algebra. For example, \[ \mathbb{F}^n \] is a vector space over
+              \(\mathbb{F}\). In particular, \[ \mathbb{F}_2^n \] is a vector space whose vectors have entries in \(\mathbb{F}_2=\{0,1\}\).
+            </li>
+            <li>
+              The complex numbers \(\mathbb{C}\) form a field and also provide a natural description of rotations in the plane. Identifying \[
+              (x,y)\in\mathbb{R}^2 \] with \[ z=x+iy\in\mathbb{C}, \] multiplication by \[ e^{i\theta} \] rotates the plane through an angle
+              \(\theta\): \[ z\longmapsto e^{i\theta}z. \]
+            </li>
+            <li>
+              The quaternions \[ \mathbb{H} = \{a+bi+cj+dk:a,b,c,d\in\mathbb{R}\} \] are closely related to rotations in three-dimensional geometry.
+              Every nonzero quaternion has a multiplicative inverse, but \[ ij=k, \qquad ji=-k. \] Hence multiplication is not commutative, so
+              \(\mathbb{H}\) is not a field.
+            </li>
+          </ul>
+        </math-block>
+        <p>
+          From the very beginning, I expected fields to be distinguished by exotic elements or unusual constructions, I even imagine some fields have
+          no connection to \(\mathbb{R}\). However, the examples above suggest a different point of view. Every field contains a prime subfield
+          isomorphic either to \(\mathbb{Q}\) or to some \(\mathbb{F}_p\): \[ \mathbb{Q} \hookrightarrow \mathbb{F} \quad \text{if }
+          \operatorname{char}(\mathbb{F})=0, \] while \[ \mathbb{F}_p \hookrightarrow \mathbb{F} \quad \text{if } \operatorname{char}(\mathbb{F})=p>0.
+          \]
+        </p>
+        <p>
+          What matters, therefore, is not primarily what the elements are, but how they interact through the field operations. The structure is
+          encoded by the relations and axioms among the elements.
+        </p>
+      </div>
+    </div>
+
+    <script type="module" src="/src/scripts/posts.js"></script>
+  </body>
+</html>
