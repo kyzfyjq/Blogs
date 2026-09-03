@@ -52,5 +52,12 @@ function mountPageTitle() {
   }
 }
 
+// Keep scroll position
+window.history.scrollRestoration = "manual";
+
+window.addEventListener("load", () => {
+  window.scrollTo(0, 0);
+});
+
 mountNaviBar();
 mountPageTitle();
