@@ -3,20 +3,21 @@ export function initMathBlocks() {
 
   for (const block of mathBlocks) {
     const type = block.classList[0];
+
     if (!type) {
       continue;
     }
 
-    const title = block.querySelector(":scope > b");
-    if (!title) {
-      continue;
-    }
+    let title = block.querySelector(":scope > b");
 
-    if (!title.textContent.trim()) {
-      continue;
+    if (!title) {
+      title = document.createElement("b");
+      block.prepend(title);
     }
 
     const name = type[0].toUpperCase() + type.slice(1);
-    title.textContent = `${name} ${title.textContent}`;
+    const content = title.textContent.trim();
+
+    title.textContent = content ? `${name} ${content}` : name;
   }
 }

@@ -4,6 +4,11 @@ math-block {
   border: 2.5px solid black;
 }
 
+math-graph {
+  display: block;
+  overflow-x: auto;
+}
+
 math-block > b {
   display: inline;
   font-weight: 700;

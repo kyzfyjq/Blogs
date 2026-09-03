@@ -40,6 +40,7 @@
   },
   "dependencies": {
     "cheerio": "^1.2.0",
+    "mermaid": "^11.17.2",
     "vue": "^3.5.41"
   }
 }
