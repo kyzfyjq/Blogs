@@ -5,6 +5,7 @@
   "scripts": {
     "metadata": "node scripts/dataAnalysis.js",
     "dev": "vite --open",
+    "preview": "vite preview",
     "build": "pnpm metadata && vite build",
     "lint": "eslint . && stylelint \"**/*.{css,vue}\"",
     "lint:fix": "eslint . --fix && stylelint \"**/*.{css,vue}\" --fix",
