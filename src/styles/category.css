@@ -1,0 +1,31 @@
+#children h2 {
+  margin-top: 2rem;
+}
+
+.category-listing {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.category-entry {
+  display: flex;
+  align-items: baseline;
+  gap: 0.5rem;
+  color: inherit;
+  text-decoration: none;
+  width: max-content;
+}
+
+.category-entry:hover {
+  text-decoration: underline;
+}
+
+.category-entry time {
+  font-variant-numeric: tabular-nums;
+}
+
+.category-entry-directory {
+  color: #005fcc;
+  font-weight: 600;
+}

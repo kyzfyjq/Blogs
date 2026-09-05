@@ -1,9 +1,17 @@
 html {
-  font-size: larger;
+  font-size: 20px;
   font-family: "Latin Modern Roman", serif;
 }
 
+body {
+  margin: 0;
+}
+
 p {
+  margin: 0;
+}
+
+ul {
   margin: 0;
 }
 
@@ -31,8 +39,4 @@ p {
 
 header {
   text-align: center;
-}
-
-ul {
-  margin: 0;
 }
