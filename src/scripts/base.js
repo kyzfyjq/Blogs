@@ -8,7 +8,7 @@ function createNaviLink(page) {
   const link = document.createElement("a");
 
   link.href = page.url;
-  link.textContent = page.label;
+  link.textContent = page.title;
 
   return link;
 }
@@ -36,7 +36,7 @@ function mountNaviBar() {
   const naviBar = getNaviBar();
   naviBar.replaceChildren();
 
-  const naviPages = pagesData.filter((page) => page.isRootPage());
+  const naviPages = pagesData.filter((page) => page.isNavigationPage());
 
   for (const page of naviPages) {
     naviBar.append(createNaviLink(page));

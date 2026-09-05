@@ -1,8 +1,10 @@
+import { execFileSync } from "node:child_process";
 import fs from "node:fs/promises";
 import path from "node:path";
 
 import { load } from "cheerio";
 
+import { getPageTypeConfig } from "../src/core/pageTypes.js";
 import { Page } from "../src/models/page.js";
 import { getPages } from "./getPages.js";
 
@@ -10,32 +12,60 @@ const pageRootDir = "./src/pages";
 const outputFile = "./src/data/pagesData.json";
 const homePagePath = "./index.html";
 
+function gitLastModifiedDate(filePath) {
+  const relativePath = path.relative(process.cwd(), path.resolve(filePath));
+
+  try {
+    const date = execFileSync("git", ["log", "-1", "--format=%cI", "--", relativePath], { encoding: "utf8" }).trim();
+
+    return date || null;
+  } catch {
+    return null;
+  }
+}
+
+function metaContent($, name) {
+  return $(`meta[name="${name}"]`).attr("content") ?? null;
+}
+
 // Node.js Only
 export async function extractPage(filePath, options = {}) {
   const html = await fs.readFile(filePath, "utf8");
   const $ = load(html);
 
-  // HTML Metadata
-  const title = $('meta[name="title"]').attr("content");
-  const label = $('meta[name="label"]').attr("content") ?? title;
-  const summary = $('meta[name="summary"]').attr("content");
-  const releaseDate = $('meta[name="releaseDate"]').attr("content");
+  const pageType = metaContent($, "page-type");
 
-  // File system metadata
-  const stats = await fs.stat(filePath);
+  if (!pageType) {
+    throw new Error(`${filePath} is missing the required meta[name="page-type"]`);
+  }
+  if (!getPageTypeConfig(pageType)) {
+    throw new Error(`${filePath} declares unknown page-type "${pageType}"`);
+  }
+
+  const title = metaContent($, "title");
+  const summary = metaContent($, "summary");
+  const createdDate = metaContent($, "createdDate");
+
+  if (pageType === "post" && !createdDate) {
+    throw new Error(`${filePath} is a post and requires meta[name="createdDate"]`);
+  }
+
   const relativePath = path.relative(pageRootDir, filePath);
   const directory = path.dirname(relativePath);
-  const categories = directory === "." ? [] : directory.split(path.sep);
+  const categoryPath = directory === "." ? [] : directory.split(path.sep);
+  const slug = path.basename(relativePath, ".html");
+  const lastModifiedDate = gitLastModifiedDate(filePath) ?? createdDate;
 
   return new Page({
     path: relativePath,
     url: `/src/pages/${relativePath}`,
+    slug,
+    pageType,
     title,
-    label,
     summary,
-    releaseDate,
-    lastModifiedDate: stats.mtime.toISOString(),
-    categories,
+    createdDate,
+    lastModifiedDate,
+    categoryPath,
     ...options,
   });
 }
@@ -47,15 +77,15 @@ async function generatePagesData() {
     await extractPage(homePagePath, {
       path: "index.html",
       url: "/",
-      categories: [],
+      slug: "index",
+      categoryPath: [],
     }),
   );
 
   const pagePaths = await getPages(pageRootDir);
 
   for (const filePath of pagePaths) {
-    const pageData = await extractPage(filePath);
-    pagesData.push(pageData);
+    pagesData.push(await extractPage(filePath));
   }
 
   await fs.mkdir(path.dirname(outputFile), { recursive: true });

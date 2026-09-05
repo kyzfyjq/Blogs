@@ -1,16 +1,27 @@
 export class Page {
-  constructor({ path, url = null, title, label = null, summary = null, releaseDate = null, lastModifiedDate = null, categories = [] }) {
+  constructor({ path, url, slug, pageType, title, summary = null, createdDate = null, lastModifiedDate = null, categoryPath = [] }) {
     this.path = path;
     this.url = url;
+    this.slug = slug;
+    this.pageType = pageType;
     this.title = title;
-    this.label = label;
     this.summary = summary;
-    this.releaseDate = releaseDate;
+    this.createdDate = createdDate;
     this.lastModifiedDate = lastModifiedDate;
-    this.categories = categories;
+    this.categoryPath = categoryPath;
   }
 
   isRootPage() {
-    return this.categories.length === 0;
+    return this.categoryPath.length === 0;
+  }
+
+  isNavigationPage() {
+    if (this.pageType === "home" || this.pageType === "time-sorted") {
+      return true;
+    }
+    if (this.pageType === "category") {
+      return this.categoryPath.length === 1;
+    }
+    return this.categoryPath.length === 0;
   }
 }
