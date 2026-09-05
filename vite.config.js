@@ -2,6 +2,7 @@ import { defineConfig } from "vite";
 import { globSync } from "node:fs";
 import vue from "@vitejs/plugin-vue";
 import { getPageTypeConfig } from "./src/core/pageTypes.js";
+import { MATHJAX_CONFIG, MATHJAX_SOURCE_URL, htmlHasTex } from "./src/core/mathjax.js";
 import { SITE_BASE } from "./src/config/site.js";
 
 const pageInputs = Object.fromEntries(
@@ -29,16 +30,36 @@ export default defineConfig({
             throw new Error(`${context?.filename ?? "html"}: missing or unknown meta[name="page-type"]`);
           }
 
-          return [
-            {
-              tag: "script",
-              attrs: {
-                type: "module",
-                src: pageTypeConfig.entry,
+          const tags = [];
+
+          if (htmlHasTex(html)) {
+            tags.push(
+              {
+                tag: "script",
+                children: MATHJAX_CONFIG,
+                injectTo: "head-prepend",
               },
-              injectTo: "body",
+              {
+                tag: "script",
+                attrs: {
+                  src: MATHJAX_SOURCE_URL,
+                  defer: true,
+                },
+                injectTo: "head-prepend",
+              },
+            );
+          }
+
+          tags.push({
+            tag: "script",
+            attrs: {
+              type: "module",
+              src: pageTypeConfig.entry,
             },
-          ];
+            injectTo: "body",
+          });
+
+          return tags;
         },
       },
     },

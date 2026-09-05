@@ -1,5 +1,4 @@
 import { Feature } from "./feature.js";
-import { contentHasTex } from "../features/mathjax/detect.js";
 
 export const FEATURES = [
   new Feature({
@@ -35,18 +34,6 @@ export const FEATURES = [
 
     load() {
       return import("../features/math-graph/index.js");
-    },
-  }),
-
-  new Feature({
-    name: "mathjax",
-
-    detect({ content }) {
-      return contentHasTex(content);
-    },
-
-    load() {
-      return import("../features/mathjax/index.js");
     },
   }),
 ];
