@@ -12,15 +12,19 @@
         <header>
           <h1>Thoughts on Principles of Mathematical Analysis - Rudin</h1>
         </header>
-        <h2>Introduction</h2>
+
+        <h2>The Real and Complex Number Systems</h2>
+        <h3>Ordered sets</h3>
         <math-block class="definition">
           <b>1.5</b>
-          <p>Let \(S\) be a set. An order on \(S\) is a relation, denoted by \(\lt\), with the following two properties:</p>
+          <p>Let \(S\) be a set. An <i>order</i> on \(S\) is a relation, denoted by \(\lt\), with the following two properties:</p>
+
           <ul>
             <li>
               <b>(i).</b>
               If \(x \in S\) and \(y \in S\), then one and only one of the statements \[ x \lt y, x = y, y \lt x \] is true.
             </li>
+
             <li>
               <b>(ii).</b>
               If \(x,y,z \in S\), if \(x \lt y\) and \(y \lt z\), then \(x \lt z\).
@@ -28,9 +32,9 @@
           </ul>
         </math-block>
         <math-block class="example">
-          <b>1.5</b>
           <ul>
             <li>If \(X\) is a set, then \((\mathcal{P}(X), \subseteq)\) is a partially ordered set.</li>
+
             <li>
               If \(F\) is a field, then the set of monic polynomials in \(F[x]\), ordered by divisibility, is a partially ordered set.
               <br />
@@ -38,13 +42,16 @@
             </li>
           </ul>
         </math-block>
+        <h3>Fields</h3>
         <math-block class="definition">
           <b>1.12</b>
           <p>
             A <i>field</i> is a set \(\mathbb{F}\) with two operations, called <i>addition</i> and <i>multiplication</i>, which satisfy the following
             so-called “field axioms” (A), (M), and (D):
           </p>
+
           <b>(A) Axioms for addition</b>
+
           <ul>
             <li>
               <b>(A1)</b>
@@ -106,34 +113,40 @@
           <p>\[ x(y+z)=xy+xz \] holds for all \(x,y,z\in\mathbb{F}\).</p>
         </math-block>
         <math-block class="example">
-          <b></b>
           <ul>
             <li>If \(p\) is a prime number, then \(\mathbb{F}_p = \mathbb{Z}/p\mathbb{Z}\) is a field.</li>
+
             <li>
               If \(\mathbb{F}\) is a field, then the rational function field \[ \mathbb{F}(t) = \left\{ \frac{f(t)}{g(t)} :
               f(t),g(t)\in\mathbb{F}[t],\ g(t)\neq 0 \right\} \] is a field. In particular, \(\mathbb{F}_p(t)\) is a field for every prime \(p\).
             </li>
+
             <li>
               If \(\mathbb{F}\) is a field, then the formal Laurent series field \[ \mathbb{F}((t)) = \left\{ \sum_{n=N}^{\infty} a_n t^n :
               N\in\mathbb{Z},\ a_n\in\mathbb{F} \right\} \] is a field. In particular, \(\mathbb{F}_p((t))\) is a field for every prime \(p\).
             </li>
+
             <li>
               For every prime \(p\) and every positive integer \(n\), there exists a finite field with exactly \(p^n\) elements, denoted by \[
               \mathbb{F}_{p^n}. \] Moreover, every finite field has \(p^n\) elements for some prime \(p\) and positive integer \(n\).
             </li>
+
             <li>
               A field with four elements is \[ \mathbb{F}_4 = \mathbb{F}_2[x]/(x^2+x+1). \] If \(\alpha=[x]\), then \[ \alpha^2+\alpha+1=0, \] so \[
               \mathbb{F}_4 = \{0,1,\alpha,\alpha+1\}. \]
             </li>
+
             <li>
               Every field \(\mathbb{F}\) can be used as a scalar field for linear algebra. For example, \[ \mathbb{F}^n \] is a vector space over
               \(\mathbb{F}\). In particular, \[ \mathbb{F}_2^n \] is a vector space whose vectors have entries in \(\mathbb{F}_2=\{0,1\}\).
             </li>
+
             <li>
               The complex numbers \(\mathbb{C}\) form a field and also provide a natural description of rotations in the plane. Identifying \[
               (x,y)\in\mathbb{R}^2 \] with \[ z=x+iy\in\mathbb{C}, \] multiplication by \[ e^{i\theta} \] rotates the plane through an angle
               \(\theta\): \[ z\longmapsto e^{i\theta}z. \]
             </li>
+
             <li>
               The quaternions \[ \mathbb{H} = \{a+bi+cj+dk:a,b,c,d\in\mathbb{R}\} \] are closely related to rotations in three-dimensional geometry.
               Every nonzero quaternion has a multiplicative inverse, but \[ ij=k, \qquad ji=-k. \] Hence multiplication is not commutative, so
@@ -152,6 +165,420 @@
           What matters, therefore, is not primarily what the elements are, but how they interact through the field operations. The structure is
           encoded by the relations and axioms among the elements.
         </p>
+        <h2>Basic Topology</h2>
+        <h3>Metric Spaces</h3>
+        <math-block class="definition">
+          <b>2.15</b>
+          <p>
+            A set \(X\), whose elements we shall call <i>points</i>, is said to be a <i>metric space</i> if with any two points \(p\) and \(q\) of
+            \(X\) there is associated a real number \(d(p,q)\), called the <i>distance</i> from \(p\) to \(q\), such that
+          </p>
+
+          <ul>
+            <li>\(d(p,q) > 0\) if \(p \neq q\), and \[ d(p,p)=0. \]</li>
+
+            <li>\[ d(p,q)=d(q,p). \]</li>
+
+            <li>For any \(r\in X\), \[ d(p,q)\leq d(p,r)+d(r,q). \]</li>
+          </ul>
+
+          <p>
+            Any function with these three properties is called a
+            <i>distance function</i>, or a <i>metric</i>.
+          </p>
+        </math-block>
+        <math-block class="example">
+          <ul>
+            <li>
+              <b>Discrete metric.</b>
+              Let \(X\) be any set, and define \[ d(x,y) = \begin{cases} 0, & x=y,\\ 1, & x\neq y. \end{cases} \] Then \(d\) is a metric on \(X\).
+            </li>
+
+            <li>
+              <b>Taxicab metric.</b>
+              On \(\mathbb{R}^n\), define \[ d(x,y)=\sum_{i=1}^{n}|x_i-y_i|. \] Then \(d\) is a metric on \(\mathbb{R}^n\).
+            </li>
+
+            <li>
+              <b>Sup metric.</b>
+              On \(\mathbb{R}^n\), define \[ d(x,y)=\max_{1\leq i\leq n}|x_i-y_i|. \] Then \(d\) is a metric on \(\mathbb{R}^n\).
+            </li>
+
+            <li>
+              <b>A function space.</b>
+              Let \[ X=C([0,1]), \] the set of all continuous functions \(f:[0,1]\to\mathbb{R}\). Define \[ d(f,g)=\sup_{x\in[0,1]}|f(x)-g(x)|. \]
+              Then \(d\) is a metric on \(C([0,1])\).
+            </li>
+
+            <li>
+              <b>A sequence space.</b>
+              Let \[ \ell^2 = \left\{ (x_n): \sum_{n=1}^{\infty}|x_n|^2\lt\infty \right\}. \] For \(x=(x_n)\) and \(y=(y_n)\), define \[ d(x,y) =
+              \left( \sum_{n=1}^{\infty}|x_n-y_n|^2 \right)^{1/2}. \] Then \(d\) is a metric on \(\ell^2\).
+            </li>
+
+            <li>
+              <b>Infinite binary sequences.</b>
+              Let \[ X=\{0,1\}^{\mathbb{N}}. \] For distinct \(x,y\in X\), let \(n\) be the first index such that \(x_n\neq y_n\), and define \[
+              d(x,y)=2^{-n}, \] with \(d(x,x)=0\). Then \(d\) is a metric on \(X\).
+            </li>
+
+            <li>
+              <b>\(p\)-adic metric.</b>
+              Let \(p\) be a prime number. On \(\mathbb{Q}\), define \[ d_p(x,y)=|x-y|_p, \] where \(|\cdot|_p\) is the \(p\)-adic absolute value.
+              Then \(d_p\) is a metric on \(\mathbb{Q}\). Its completion is the metric space \(\mathbb{Q}_p\).
+            </li>
+          </ul>
+        </math-block>
+        <p>
+          So we construct a map \[ d:X^2\to\mathbb{R}_{\geq 0}, \] and impose certain properties on it. What happens if we change these properties?
+        </p>
+        <p>
+          <b>(i).</b>
+          If \(\exists p,q \in X, p \neq q, d(p,q) = 0\), imagine we are rubbing paper, or in a infinite space which the infinite point are all the
+          same, or spread out a ball from a point, Let me test my intuition
+        </p>
+        <p>
+          First, consider the space itself. Let \[ B_r(p) = B(p,r) = \{x\in X : d(x,p) \lt r\}. \] If \(d(p,q)=0\), then \[ B_r(p)=B_r(q) \] for every
+          \(r>0\). Thus we cannot distinguish \(p\) and \(q\) using the distance structure alone.
+        </p>
+        <p>
+          This naturally suggests defining an equivalence relation \[ p\sim q \iff d(p,q)=0. \] We can then pass to the quotient space \[ X/{\sim}, \]
+          and define \[ \bar d([p],[q])=d(p,q). \] This is well-defined, and \((X/{\sim},\bar d)\) is a metric space.
+        </p>
+        <p>This looks useless, but do help to remove properties we don't care.</p>
+        <math-block class="example">
+          <p>
+            One of the most important practical examples comes from function spaces. Consider the space \[ \mathcal{L}^2([0,1]) = \left\{
+            f:[0,1]\to\mathbb{R} : f \text{ is measurable and } \int_0^1 |f(x)|^2\,dx \lt \infty \right\}. \] Define \[ d(f,g) = \left( \int_0^1
+            |f(x)-g(x)|^2\,dx \right)^{1/2}. \]
+          </p>
+          <p>
+            Now let \( f(x)=0 \) for every \(x\in[0,1]\), and define \[ g(x) = \begin{cases} 1, & x=\frac12,\\ 0, & x\neq\frac12. \end{cases} \]
+            Clearly, \( f\neq g \) as functions, since they have different values at \(x=\frac12\).
+          </p>
+          <p>
+            However, \[ d(f,g) = \left( \int_0^1 |f(x)-g(x)|^2\,dx \right)^{1/2} = 0, \] because changing the value of a function at a single point
+            does not change the integral.
+          </p>
+          <p>
+            Thus the distance does not distinguish functions that differ only on a set of measure zero. This naturally suggests the equivalence
+            relation \[ f\sim g \iff f=g \quad \text{almost everywhere}. \]
+          </p>
+          <p>
+            Passing to the quotient space identifies such functions: \[ L^2([0,1]) = \{f:[0,1]\to\mathbb{R}\}/{\sim}, \] more precisely, after
+            restricting to square-integrable functions. On these equivalence classes, the formula \[ d([f],[g]) = \left( \int_0^1 |f(x)-g(x)|^2\,dx
+            \right)^{1/2} \] defines a genuine metric.
+          </p>
+          <p>
+            In this example, zero distance does not mean that two functions are literally the same. Rather, it means that the notion of distance
+            deliberately ignores differences on sets of measure zero.
+          </p>
+        </math-block>
+        <p>
+          <b>(ii).</b>
+          If \(\exists p,q \in X, p \neq q, d(p,q) \neq d(q,p)\)
+        </p>
+        <math-block class="example">
+          <p>Suppose that there exist \(p,q\in X\) such that \[ d(p,q)\neq d(q,p). \] A natural example comes from a directed graph.</p>
+          <p>
+            Let \[ X=\{A,B,C\}, \] with directed edges \[ A\to B,\qquad B\to C,\qquad C\to A. \] Give each edge length \(1\), and define \[ d(p,q) \]
+            to be the length of the shortest directed path from \(p\) to \(q\).
+          </p>
+          <!-- prettier-ignore -->
+          <math-graph>
+              graph LR
+                  A --> B
+                  B --> C
+                  C --> A
+          </math-graph>
+          <p>
+            For example, \[ d(A,B)=1, \] while \[ d(B,A)=2, \] since the shortest directed path from \(B\) to \(A\) is \[ B\to C\to A. \] Hence \[
+            d(A,B)\neq d(B,A). \]
+          </p>
+        </math-block>
+        <p>
+          However, this feels less like an ordinary notion of distance and more like something carrying directional information. reminds me of a
+          vector, although \(d(p,q)\) itself is still a scalar rather than a vector.
+        </p>
+        <p>
+          <b>(iii).</b>
+          We cannot simply reverse it, so let me try changing or removing it in different ways.
+        </p>
+        <ul>
+          <li>If we remove it, we'll get something like set</li>
+          <li>
+            If we change it to \(d(p,q) \leq \max( d(p,r), d(q,r) ) \), then \(d(p,r) \lt d(q,r) \Longrightarrow d(p,q) = d(q,r)\), so every triangle
+            is isosceles
+          </li>
+        </ul>
+        <math-block class="definition">
+          <b>2.18</b>
+          <p>Let \(X\) be a metric space. All points and sets mentioned below are understood to be elements and subsets of \(X\).</p>
+
+          <ul>
+            <li>
+              <b>(a)</b>
+              A <i>neighborhood</i> of \(p\) is a set \(N_r(p)\) consisting of all \(q\) such that \[ d(p,q) \lt r \] for some \(r>0\). The number
+              \(r\) is called the <i>radius</i> of \(N_r(p)\).
+            </li>
+
+            <li>
+              <b>(b)</b>
+              A point \(p\) is a <i>limit point</i> of the set \(E\) if every neighborhood of \(p\) contains a point \(q\neq p\) such that \(q\in E\).
+            </li>
+
+            <li>
+              <b>(c)</b>
+              If \(p\in E\) and \(p\) is not a limit point of \(E\), then \(p\) is called an <i>isolated point</i> of \(E\).
+            </li>
+
+            <li>
+              <b>(d)</b>
+              \(E\) is <i>closed</i> if every limit point of \(E\) is a point of \(E\).
+            </li>
+
+            <li>
+              <b>(e)</b>
+              A point \(p\) is an <i>interior point</i> of \(E\) if there is a neighborhood \(N\) of \(p\) such that \[ N\subset E. \]
+            </li>
+
+            <li>
+              <b>(f)</b>
+              \(E\) is <i>open</i> if every point of \(E\) is an interior point of \(E\).
+            </li>
+
+            <li>
+              <b>(g)</b>
+              The <i>complement</i> of \(E\), denoted by \(E^c\), is the set of all points \(p\in X\) such that \[ p\notin E. \]
+            </li>
+
+            <li>
+              <b>(h)</b>
+              \(E\) is <i>perfect</i> if \(E\) is closed and if every point of \(E\) is a limit point of \(E\).
+            </li>
+
+            <li>
+              <b>(i)</b>
+              \(E\) is <i>bounded</i> if there is a real number \(M\) and a point \(q\in X\) such that \[ d(p,q)\lt M \] for all \(p\in E\).
+            </li>
+
+            <li>
+              <b>(j)</b>
+              \(E\) is <i>dense in \(X\)</i> if every point of \(X\) is a limit point of \(E\), or a point of \(E\), or both.
+            </li>
+          </ul>
+        </math-block>
+        <math-block class="example">
+          <ul>
+            <li>
+              <p>
+                <b>Discrete metric.</b>
+                Let \(X\) be any set, and define \[ d(x,y) = \begin{cases} 0, & x=y,\\ 1, & x\neq y. \end{cases} \] Then \(X\) is a metric space.
+              </p>
+              <p>
+                If \(0 \lt r\leq 1\), then \[ B_r(p)=\{p\}, \] while if \(r>1\), \[ B_r(p)=X. \] Hence every point is isolated, and every subset of
+                \(X\) is both open and closed.
+              </p>
+            </li>
+
+            <li>
+              <p>
+                <b>Infinite binary sequences.</b>
+                Let \[ X=\{0,1\}^{\mathbb{N}}. \] For distinct \(x,y\in X\), let \(n\) be the first index such that \(x_n\neq y_n\), and define \[
+                d(x,y)=2^{-n}, \] with \(d(x,x)=0\).
+              </p>
+
+              <p>
+                For a finite binary sequence \[ s=(s_1,\ldots,s_n), \] define the <i>cylinder set</i>
+                \[ [s] = \left\{ x\in X: x_1=s_1,\ldots,x_n=s_n \right\}. \]
+              </p>
+
+              <p>
+                If \[ x=(x_1,x_2,\ldots)\in X, \] then \[ B\left(x,2^{-n}\right) = [x_1,\ldots,x_n]. \] Indeed, \[ d(x,y)\lt 2^{-n} \] if and only if
+                the first index at which \(x\) and \(y\) differ is greater than \(n\), which is equivalent to \[ y_1=x_1,\ldots,y_n=x_n. \] Thus a
+                basic neighborhood of \(x\) consists precisely of all sequences sharing a sufficiently long finite prefix with \(x\).
+              </p>
+
+              <math-block class="theorem">
+                <b></b>
+
+                <p>
+                  A subset \(U\subseteq X\) is open if and only if it is a union of cylinder sets. That is, \[ U = \bigcup_{s\in S}[s] \] for some
+                  collection \(S\) of finite binary sequences.
+                </p>
+              </math-block>
+
+              <math-block class="proof">
+                <b></b>
+
+                <p>
+                  Suppose first that \[ U=\bigcup_{s\in S}[s]. \] Each cylinder set \([s]\) is an open ball, hence is open. Therefore \(U\), being a
+                  union of open sets, is open.
+                </p>
+
+                <p>
+                  Conversely, suppose that \(U\) is open. For every \(x\in U\), there exists \(r>0\) such that \[ B(x,r)\subseteq U. \] Choose \(n\)
+                  sufficiently large that \[ 2^{-n}\lt r. \] Then \[ [x_1,\ldots,x_n] = B\left(x,2^{-n}\right) \subseteq B(x,r) \subseteq U. \] Hence
+                  every \(x\in U\) belongs to some cylinder set contained in \(U\). Therefore \[ U = \bigcup_{\,[s]\subseteq U}[s]. \]
+                </p>
+              </math-block>
+
+              <math-block class="theorem">
+                <b></b>
+
+                <p>
+                  A subset \(F\subseteq X\) is closed if and only if \[ F = \bigcap_{n=1}^{\infty} U_n, \] where \[ U_n = \bigcup_{\substack{
+                  s\in\{0,1\}^n\\ [s]\cap F\neq\varnothing }} [s]. \] In other words, \(U_n\) consists of all sequences whose first \(n\) entries
+                  agree with the first \(n\) entries of some point of \(F\).
+                </p>
+              </math-block>
+
+              <math-block class="proof">
+                <b></b>
+
+                <p>
+                  Suppose first that \(F\) is closed. Since every point of \(F\) belongs to a cylinder set occurring in \(U_n\), \[ F\subseteq U_n \]
+                  for every \(n\). Hence \[ F \subseteq \bigcap_{n=1}^{\infty}U_n. \]
+                </p>
+
+                <p>
+                  Now let \(x\notin F\). Since \(F\) is closed, \[ X\setminus F \] is open. By the structure theorem for open sets, there exists some
+                  \(n\) such that \[ [x_1,\ldots,x_n] \subseteq X\setminus F. \] Therefore \[ [x_1,\ldots,x_n]\cap F=\varnothing, \] so \(x\notin
+                  U_n\). Hence \[ x\notin \bigcap_{n=1}^{\infty}U_n. \] Thus \[ F = \bigcap_{n=1}^{\infty}U_n. \]
+                </p>
+
+                <p>
+                  Conversely, suppose that \[ F = \bigcap_{n=1}^{\infty}U_n \] with each \(U_n\) defined as above. Each \(U_n\) is a union of cylinder
+                  sets and is therefore open. In fact, each cylinder set is also closed, and since \(U_n\) is a finite union of cylinders of length
+                  \(n\), \(U_n\) is closed. Therefore \[ F = \bigcap_{n=1}^{\infty}U_n \] is closed.
+                </p>
+              </math-block>
+            </li>
+
+            <li>
+              <p>
+                <b>A function space.</b>
+                Let \[ X=C([0,1]), \] the set of all continuous functions \[ f:[0,1]\to\mathbb{R}. \] Define \[ d(f,g) = \|f-g\|_{\infty} =
+                \sup_{x\in[0,1]} |f(x)-g(x)|. \] Then \(C([0,1])\) is a metric space.
+              </p>
+              <p>
+                A ball centered at \(f\) is \[ B_r(f) = \left\{ g\in C([0,1]): \|f-g\|_{\infty} \lt r \right\}. \] Thus \(g\) is close to \(f\) when
+                the two functions remain close at every point of \([0,1]\).
+              </p>
+            </li>
+
+            <li>
+              <p>
+                <b>The \(p\)-adic metric.</b>
+                Let \(p\) be a prime number. On \(\mathbb{Q}\), define \[ d_p(x,y)=|x-y|_p, \] where the \(p\)-adic absolute value is determined by \[
+                |p^n a/b|_p=p^{-n}, \] whenever \(a\) and \(b\) are not divisible by \(p\).
+              </p>
+              <p>
+                For example, in the \(2\)-adic metric, \[ d_2(0,8)=|8|_2=\frac{1}{8}, \] while \[ d_2(0,3)=|3|_2=1. \] Thus \(8\) is closer to \(0\)
+                than \(3\) is in this metric.
+              </p>
+              <p>Completing \(\mathbb{Q}\) with respect to \(d_p\) gives the metric space of \(p\)-adic numbers \[ \mathbb{Q}_p. \]</p>
+            </li>
+          </ul>
+        </math-block>
+        <math-block class="theorem">
+          <b>2.30</b>
+          <p>
+            Suppose \(Y\subset X\). A subset \(E\) of \(Y\) is <i>open relative to \(Y\)</i>
+            if and only if \[ E=Y\cap G \] for some open subset \(G\) of \(X\).
+          </p>
+        </math-block>
+        <p>
+          We often want to understand whether a property is preserved when passing to a smaller or a larger space. For open sets, the neighborhoods
+          change according to \[ B_Y(p,r)=B_X(p,r)\cap Y. \] What happens to limit points? It's trivial that \[E \subset Y \subset X,
+          E~is~closed~relative~to~Y \iff E=Y\cap F,~F~is~closed~relative~to~X \]
+        </p>
+        <h3>Compact Sets</h3>
+        <math-block class="definition">
+          <b>2.32</b>
+
+          <p>
+            A subset \(K\) of a metric space \(X\) is said to be <i>compact</i>
+            if every open cover of \(K\) contains a finite subcover.
+          </p>
+
+          <p>
+            More explicitly, this requirement is that if \(\{G_\alpha\}\) is an open cover of \(K\), then there are finitely many indices
+            \(\alpha_1,\ldots,\alpha_n\) such that \[ K \subset G_{\alpha_1} \cup\cdots\cup G_{\alpha_n}. \]
+          </p>
+        </math-block>
+        <math-block class="example">
+          <ul>
+            <li>
+              <p>
+                <b>Discrete metric space.</b>
+                Let \(X\) be any set equipped with the discrete metric \[ d(x,y) = \begin{cases} 0, & x=y,\\ 1, & x\neq y. \end{cases} \] Then every
+                finite subset \[ K=\{x_1,\ldots,x_n\} \] is compact.
+              </p>
+
+              <p>In fact, in a discrete metric space a subset is compact if and only if it is finite.</p>
+            </li>
+
+            <li>
+              <p>
+                <b>Infinite binary sequences.</b>
+                Let \[ X=\{0,1\}^{\mathbb{N}}, \] and for \(x\neq y\), let \(n\) be the first index for which \(x_n\neq y_n\), with \[ d(x,y)=2^{-n}.
+                \] Then the whole space \[ \{0,1\}^{\mathbb{N}} \] is compact.
+              </p>
+            </li>
+
+            <p>
+              <b>Non-compact subsets of the space of infinite binary sequences.</b>
+              Although \[ X=\{0,1\}^{\mathbb{N}} \] is compact, not every subset of \(X\) is compact.
+            </p>
+
+            <p>
+              For each \(n\in\mathbb{N}\), define \[ x^{(n)} = (\underbrace{0,\ldots,0}_{n-1},1,0,0,\ldots), \] and let \[ E =
+              \{x^{(n)}:n\in\mathbb{N}\}. \] For each \(n\), consider the cylinder \[ U_n = [\underbrace{0\cdots0}_{n-1}1]. \] Then \[ U_n\cap
+              E=\{x^{(n)}\}. \] Hence \[ E\subseteq\bigcup_{n=1}^{\infty}U_n, \] but no finite subcollection of the \(U_n\)'s covers \(E\). Therefore
+              \(E\) is not compact.
+            </p>
+
+            <p>
+              Another example is \[ X\setminus\{(0,0,0,\ldots)\}. \] Every nonzero binary sequence has a first entry equal to \(1\), so \[
+              X\setminus\{(0,0,0,\ldots)\} = \bigcup_{n=1}^{\infty} [\underbrace{0\cdots0}_{n-1}1]. \] Again, no finite subcollection covers the whole
+              set: after choosing only finitely many such cylinders, we can always choose a sequence whose first \(1\) occurs later than all of them.
+              Hence \[ X\setminus\{(0,0,0,\ldots)\} \] is not compact.
+            </p>
+
+            <p>
+              These examples suggest a useful way of constructing non-compact sets. Once we understand the shape of open sets and neighborhoods in a
+              space, we can try to construct an open cover such that every finite stage still misses some point. In other words, we want \[ K
+              \subseteq \bigcup_{n=1}^{\infty}U_n, \] while for every \(N\), \[ K \nsubseteq U_1\cup\cdots\cup U_N. \] Thus the main idea is to
+              understand the local structure of the space and construct points that keep escaping every finite part of the cover.
+            </p>
+
+            <li>
+              <p>
+                <b>A sequence space.</b>
+                Consider \[ \ell^2 = \left\{ (x_n): \sum_{n=1}^{\infty}|x_n|^2\lt\infty \right\} \] with metric \[ d(x,y)=\|x-y\|_2. \] Let \(e_n\)
+                denote the sequence whose \(n\)-th entry is \(1\) and whose other entries are \(0\). Then \[ K = \{0\} \cup \left\{
+                \frac{1}{n}e_n:n\in\mathbb{N} \right\} \] is compact, since \[ \left\|\frac{1}{n}e_n\right\|_2 = \frac{1}{n} \to 0. \]
+              </p>
+            </li>
+
+            <li>
+              <p>
+                <b>A function space.</b>
+                Let \[ X=C([0,1]) \] with the metric \[ d(f,g) = \|f-g\|_\infty. \] Consider the set of constant functions \[ K = \{ f_c : f_c(x)=c,\
+                0\leq c\leq1 \}. \] Then \(K\) is compact in \(C([0,1])\).
+              </p>
+            </li>
+
+            <li>
+              <p>
+                <b>The \(p\)-adic numbers.</b>
+                In the metric space \(\mathbb{Q}_p\), the set of \(p\)-adic integers \[ \mathbb{Z}_p = \{ x\in\mathbb{Q}_p: |x|_p\leq1 \} \] is
+                compact.
+              </p>
+            </li>
+          </ul>
+        </math-block>
       </div>
     </div>
   </body>
