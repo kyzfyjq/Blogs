@@ -1,6 +1,7 @@
 import pagesDataJson from "../data/pagesData.json";
 import { Page } from "../models/page.js";
 import { LISTING_IGNORE } from "../config/listingIgnore.js";
+import { resolveSiteUrl } from "../config/site.js";
 import { slugToDisplayName } from "../utils/displayName.js";
 import { byCreatedDate, byTitle } from "../utils/pageSort.js";
 
@@ -40,7 +41,7 @@ function childDirectoryUrl(slug) {
   const path = [...currentCategoryPath(), slug, "index.html"].join("/");
   const categoryPage = pages.find((page) => page.path === path);
 
-  return categoryPage?.url ?? `/src/pages/${path}`;
+  return categoryPage?.url ?? resolveSiteUrl(`src/pages/${path}`);
 }
 
 function directPages(categoryPath) {

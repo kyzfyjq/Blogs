@@ -5,6 +5,7 @@ import path from "node:path";
 import { load } from "cheerio";
 
 import { getPageTypeConfig } from "../src/core/pageTypes.js";
+import { SITE_BASE, pageUrl } from "../src/config/site.js";
 import { Page } from "../src/models/page.js";
 import { getPages } from "./getPages.js";
 
@@ -58,7 +59,7 @@ export async function extractPage(filePath, options = {}) {
 
   return new Page({
     path: relativePath,
-    url: `/src/pages/${relativePath}`,
+    url: pageUrl(relativePath),
     slug,
     pageType,
     title,
@@ -76,7 +77,7 @@ async function generatePagesData() {
   pagesData.push(
     await extractPage(homePagePath, {
       path: "index.html",
-      url: "/",
+      url: SITE_BASE,
       slug: "index",
       categoryPath: [],
     }),

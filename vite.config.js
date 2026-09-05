@@ -2,6 +2,7 @@ import { defineConfig } from "vite";
 import { globSync } from "node:fs";
 import vue from "@vitejs/plugin-vue";
 import { getPageTypeConfig } from "./src/core/pageTypes.js";
+import { SITE_BASE } from "./src/config/site.js";
 
 const pageInputs = Object.fromEntries(
   globSync("src/pages/**/*.html").map((file) => [file.replace(/^src\/pages\//, "").replace(/\.html$/, ""), file]),
@@ -12,6 +13,7 @@ function readPageType(html) {
 }
 
 export default defineConfig({
+  base: SITE_BASE,
   plugins: [
     vue(),
     {
