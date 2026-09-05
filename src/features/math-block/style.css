@@ -1,0 +1,46 @@
+math-block {
+  display: block;
+  padding: 10px;
+  border: 1.5px solid black;
+}
+
+math-block > b {
+  display: inline;
+  font-weight: 700;
+}
+
+math-block.theorem {
+  background-color: #e8e5f0;
+}
+
+math-block.proof {
+  background-color: #dbd1ed;
+}
+
+math-block.definition {
+  background-color: #e8f0ec;
+}
+
+math-block.lemma {
+  background-color: #ecefee;
+}
+
+math-block.proposition {
+  background-color: #e5e4ef;
+}
+
+math-block.corollary {
+  background-color: #e5eef1;
+}
+
+math-block.example {
+  background-color: #f3ece6;
+}
+
+math-block.remark {
+  background-color: #f1f1eb;
+}
+
+math-block.problem {
+  background-color: #f3e7e7;
+}

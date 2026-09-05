@@ -1,4 +1,4 @@
-function loadMathJax() {
+export function activate() {
   window.MathJax = {
     tex: {
       inlineMath: [["\\(", "\\)"]],
@@ -13,5 +13,3 @@ function loadMathJax() {
 
   document.head.appendChild(script);
 }
-
-loadMathJax();

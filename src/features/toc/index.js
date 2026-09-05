@@ -1,3 +1,5 @@
+import "./style.css";
+
 function slugify(text) {
   const slug = text
     .normalize("NFKD")
@@ -26,9 +28,7 @@ function ensureHeadingId(heading, usedIds) {
   usedIds.add(id);
 }
 
-export function initTableOfContents() {
-  const content = document.querySelector("#content");
-
+export function activate({ content }) {
   if (!content || document.getElementById("toc")) {
     return;
   }

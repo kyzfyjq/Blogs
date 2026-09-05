@@ -1,0 +1,9 @@
+math-graph {
+  display: block;
+  overflow-x: auto;
+  text-align: center;
+}
+
+math-graph > svg {
+  display: inline-block;
+}

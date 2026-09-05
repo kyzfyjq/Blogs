@@ -1,4 +1,6 @@
-export function initMathBlocks() {
+import "./style.css";
+
+export function activate() {
   const mathBlocks = document.querySelectorAll("math-block");
 
   for (const block of mathBlocks) {
