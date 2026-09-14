@@ -20,6 +20,8 @@ export const PAGE_TYPES = {
   },
 };
 
+export const GENERATED_PAGE_TYPES = new Set(["category", "time-sorted"]);
+
 export function getPageTypeConfig(pageType) {
   return PAGE_TYPES[pageType] ?? null;
 }
