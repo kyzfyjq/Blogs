@@ -1,49 +1,5 @@
-import pagesDataJson from "../data/pagesData.json";
-import { Page } from "../models/page.js";
+import "./sidebar.js";
 
-const pagesData = pagesDataJson.map((pageData) => new Page(pageData));
-
-// Navi bar
-function createNaviLink(page) {
-  const link = document.createElement("a");
-
-  link.href = page.url;
-  link.textContent = page.title;
-
-  return link;
-}
-
-function getNaviBar() {
-  let naviBar = document.querySelector("#navi-bar");
-  if (naviBar) {
-    return naviBar;
-  }
-
-  naviBar = document.createElement("nav");
-  naviBar.id = "navi-bar";
-
-  const layout = document.querySelector("#layout");
-  if (layout) {
-    layout.before(naviBar);
-  } else {
-    document.body.prepend(naviBar);
-  }
-
-  return naviBar;
-}
-
-function mountNaviBar() {
-  const naviBar = getNaviBar();
-  naviBar.replaceChildren();
-
-  const naviPages = pagesData.filter((page) => page.isNavigationPage());
-
-  for (const page of naviPages) {
-    naviBar.append(createNaviLink(page));
-  }
-}
-
-// Auto generate title
 function mountPageTitle() {
   const metadata = document.querySelector('meta[name="title"]');
 
@@ -52,12 +8,10 @@ function mountPageTitle() {
   }
 }
 
-// Keep scroll position
 window.history.scrollRestoration = "manual";
 
 window.addEventListener("load", () => {
   window.scrollTo(0, 0);
 });
 
-mountNaviBar();
 mountPageTitle();

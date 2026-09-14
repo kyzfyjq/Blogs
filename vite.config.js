@@ -12,6 +12,8 @@ import {
   cleanupGeneratedPages,
   promoteGeneratedPages,
   renderCategoryPage,
+  renderSiteHeader,
+  renderSiteSidebar,
   renderTimeSortedPage,
   writeGeneratedPages,
 } from "./scripts/site.js";
@@ -24,13 +26,28 @@ function readPageType(html) {
   return html.match(/<meta\s+name="page-type"\s+content="([^"]+)"/i)?.[1] ?? null;
 }
 
-function pageTypePlugin() {
+function categoryPathFromPath(value = "") {
+  const normalized = String(value).replaceAll("\\", "/").split("?")[0];
+  const marker = "/src/pages/";
+  const markerIndex = normalized.lastIndexOf(marker);
+
+  if (markerIndex === -1) {
+    return [];
+  }
+
+  const relativePath = normalized.slice(markerIndex + marker.length);
+  const directory = relativePath.includes("/") ? relativePath.slice(0, relativePath.lastIndexOf("/")) : "";
+
+  return directory.split("/").filter(Boolean);
+}
+
+function pageTypePlugin(getSiteModel) {
   return {
     name: "inject-page-entry",
     transformIndexHtml: {
       order: "pre",
 
-      handler(html, context) {
+      async handler(html, context) {
         const pageType = readPageType(html);
         const pageTypeConfig = getPageTypeConfig(pageType);
 
@@ -39,6 +56,9 @@ function pageTypePlugin() {
         }
 
         const tags = [];
+        const model = await getSiteModel();
+        const currentPath = context?.filename ?? context?.path ?? "";
+        const currentCategoryPath = categoryPathFromPath(currentPath);
 
         if (htmlHasTex(html)) {
           tags.push(
@@ -67,7 +87,14 @@ function pageTypePlugin() {
           injectTo: "body",
         });
 
-        return tags;
+        if (!html.includes('id="site-header"')) {
+          html = html.replace(
+            /(<body[^>]*>)/i,
+            `$1\n${renderSiteHeader(model)}\n${renderSiteSidebar(model, { categoryPath: currentCategoryPath, pageType })}`,
+          );
+        }
+
+        return { html, tags };
       },
     },
   };
@@ -144,9 +171,17 @@ export default defineConfig(async ({ command }) => {
     Object.assign(generatedInputs, await writeGeneratedPages(model));
   }
 
+  const getSiteModel = async () => {
+    if (model) {
+      return model;
+    }
+
+    return buildSiteModel();
+  };
+
   return {
     base: SITE_BASE,
-    plugins: [vue(), pageTypePlugin(), generatedSitePlugin({ command, model })],
+    plugins: [vue(), pageTypePlugin(getSiteModel), generatedSitePlugin({ command, model })],
     build: {
       rollupOptions: {
         input: {

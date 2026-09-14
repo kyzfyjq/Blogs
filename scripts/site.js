@@ -216,6 +216,68 @@ ${renderEntries(entries)}
         </div>`;
 }
 
+function renderTree(directories, currentCategoryPath) {
+  const items = directories
+    .map((directory) => {
+      const isOpen = hasPrefix(currentCategoryPath, directory.categoryPath);
+      const isActive = samePath(currentCategoryPath, directory.categoryPath);
+      const hasChildren = directory.directories.length > 0;
+      const children = hasChildren
+        ? `<ul class="site-tree-children">
+${renderTree(directory.directories, currentCategoryPath)}
+        </ul>`
+        : "";
+
+      return `        <li class="site-tree-item${isOpen ? " is-open" : ""}">
+          <div class="site-tree-row">
+            <a class="site-tree-link${isActive ? " is-active" : ""}" href="${escapeHtml(directory.url)}"${isActive ? ' aria-current="page"' : ""}>${escapeHtml(directory.title)}</a>
+            ${
+              hasChildren
+                ? `<button class="site-tree-toggle" type="button" aria-expanded="${isOpen}" aria-label="Toggle ${escapeHtml(directory.title)}">▸</button>`
+                : ""
+            }
+          </div>
+${children}
+        </li>`;
+    })
+    .join("\n");
+
+  return items;
+}
+
+export function renderSiteHeader(model) {
+  return `    <header id="site-header">
+      <div class="site-header-inner">
+        <button id="site-menu-toggle" class="site-menu-toggle" type="button" aria-label="Toggle navigation" aria-expanded="false">☰</button>
+        <a class="site-brand" href="${escapeHtml(SITE_BASE)}">${escapeHtml(model.home.title)}</a>
+        <nav class="site-header-nav" aria-label="Primary">
+          <a href="${escapeHtml(model.timeSorted.url)}">Timeline</a>
+          <a href="https://github.com/kyzfyjq/Blogs" target="_blank" rel="noopener">GitHub</a>
+        </nav>
+      </div>
+    </header>`;
+}
+
+export function renderSiteSidebar(model, { categoryPath = [], pageType = null } = {}) {
+  const topLevelDirectories = model.directories.filter((directory) => directory.categoryPath.length === 1);
+  const homeActive = pageType === "home" ? " is-active" : "";
+  const timelineActive = pageType === "time-sorted" ? " is-active" : "";
+
+  return `    <div id="sidebar-backdrop"></div>
+    <aside id="site-sidebar" aria-label="Site navigation">
+      <nav class="site-sidebar-inner">
+        <ul class="site-sidebar-primary">
+          <li><a class="site-nav-link${homeActive}" href="${escapeHtml(model.home.url)}"${homeActive ? ' aria-current="page"' : ""}>Home</a></li>
+          <li><a class="site-nav-link${timelineActive}" href="${escapeHtml(model.timeSorted.url)}"${timelineActive ? ' aria-current="page"' : ""}>Timeline</a></li>
+        </ul>
+        <div class="site-sidebar-divider"></div>
+        <ul class="site-tree">
+${renderTree(topLevelDirectories, categoryPath)}
+        </ul>
+      </nav>
+    </aside>`;
+}
+
 export function renderCategoryPage(directory) {
   const directories = directory.directories.map((child) => ({
     href: child.url,

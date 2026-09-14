@@ -3,10 +3,9 @@
   "version": "1.0.0",
   "description": "",
   "scripts": {
-    "metadata": "node scripts/dataAnalysis.js",
     "dev": "vite --open",
     "preview": "vite preview",
-    "build": "pnpm metadata && vite build",
+    "build": "vite build",
     "lint": "eslint . && stylelint \"**/*.{css,vue}\"",
     "lint:fix": "eslint . --fix && stylelint \"**/*.{css,vue}\" --fix",
     "format": "prettier . --write",
