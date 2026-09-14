@@ -1,20 +1,20 @@
 import fs from "node:fs/promises";
 import path from "node:path";
 
-import { getPageTypeConfig } from "../src/core/pageTypes.js";
-import { slugToDisplayName } from "../src/utils/displayName.js";
+import { GENERATED_PAGE_TYPES, getPageTypeConfig } from "../src/core/pageTypes.js";
 
 const pagesRoot = path.resolve("src/pages");
 const segmentPattern = /^[a-z0-9]+(?:-[a-z0-9]+)*$/;
+const datePattern = /^\d{4}-\d{2}-\d{2}$/;
 
-const SUPPORTED_TYPES = new Set(["post", "page", "category"]);
+const SUPPORTED_TYPES = new Set(["post", "page"]);
 
 function usage() {
   return `Usage:
   pnpm new <type> <path>
   pnpm new --check [--fix]
 
-Types: post, page, category
+Types: post, page
 Example:
   pnpm new post mathematics/analysis/compactness`;
 }
@@ -29,11 +29,13 @@ function currentDate() {
 }
 
 function parseTarget(rawTarget) {
-  if (!rawTarget || rawTarget.startsWith("/") || rawTarget.includes("\\") || rawTarget.split("/").includes("..")) {
+  const target = rawTarget?.replace(/\/+$/, "");
+
+  if (!target || target.startsWith("/") || target.includes("\\") || target.split("/").includes("..")) {
     throw new Error(`Invalid path "${rawTarget}": use safe relative kebab-case paths`);
   }
 
-  const segments = rawTarget.split("/");
+  const segments = target.split("/");
 
   for (const segment of segments) {
     if (!segmentPattern.test(segment)) {
@@ -41,7 +43,7 @@ function parseTarget(rawTarget) {
     }
   }
 
-  return segments;
+  return { segments, target };
 }
 
 function assertSafeResolved(targetPath) {
@@ -54,10 +56,13 @@ function assertSafeResolved(targetPath) {
   return resolved;
 }
 
-function documentShell({ pageType, title = "", summary = null, createdDate = null, bodyContent }) {
-  const metas = [`    <meta charset="UTF-8" />`, `    <meta name="page-type" content="${pageType}" />`];
+function documentShell({ pageType, title = "", summary = null, createdDate = null }) {
+  const metas = [
+    `    <meta charset="UTF-8" />`,
+    `    <meta name="page-type" content="${pageType}" />`,
+    `    <meta name="title" content="${title}" />`,
+  ];
 
-  metas.push(`    <meta name="title" content="${title}" />`);
   if (summary !== null) {
     metas.push(`    <meta name="summary" content="${summary}" />`);
   }
@@ -74,7 +79,9 @@ function documentShell({ pageType, title = "", summary = null, createdDate = nul
     "  <body>",
     '    <div id="layout">',
     '      <div id="content">',
-    ...bodyContent,
+    "        <header>",
+    "          <h1></h1>",
+    "        </header>",
     "      </div>",
     "    </div>",
     "  </body>",
@@ -89,7 +96,6 @@ function postTemplate() {
     title: "",
     summary: "",
     createdDate: currentDate(),
-    bodyContent: ["        <header>", "          <h1></h1>", "        </header>"],
   });
 }
 
@@ -97,21 +103,6 @@ function pageTemplate() {
   return documentShell({
     pageType: "page",
     title: "",
-    bodyContent: ["        <header>", "          <h1></h1>", "        </header>"],
-  });
-}
-
-function categoryTemplate(displayName) {
-  return documentShell({
-    pageType: "category",
-    title: displayName,
-    bodyContent: [
-      "        <header>",
-      `          <h1>${displayName}</h1>`,
-      "        </header>",
-      '        <section id="introduction"></section>',
-      '        <section id="children"></section>',
-    ],
   });
 }
 
@@ -129,10 +120,10 @@ async function createPage(type, rawTarget) {
     throw new Error(`Unsupported type "${type}"\n\n${usage()}`);
   }
 
-  parseTarget(rawTarget);
-  const filePath = path.resolve(pagesRoot, `${rawTarget}.html`);
+  const { target } = parseTarget(rawTarget);
+  const filePath = path.resolve(pagesRoot, `${target}.html`);
 
-  assertSafeResolved(`${rawTarget}.html`);
+  assertSafeResolved(`${target}.html`);
 
   if (await fileExists(filePath)) {
     throw new Error(`Refusing to overwrite existing file: ${path.relative(process.cwd(), filePath)}`);
@@ -143,26 +134,6 @@ async function createPage(type, rawTarget) {
   await fs.mkdir(path.dirname(filePath), { recursive: true });
   await fs.writeFile(filePath, html);
   console.log(`Created ${path.relative(process.cwd(), filePath)}`);
-}
-
-async function createCategory(rawTarget) {
-  const segments = parseTarget(rawTarget);
-  const directory = path.resolve(pagesRoot, rawTarget);
-
-  assertSafeResolved(rawTarget);
-
-  const indexPath = path.join(directory, "index.html");
-
-  if (await fileExists(indexPath)) {
-    throw new Error(`Refusing to overwrite existing category index: ${path.relative(process.cwd(), indexPath)}`);
-  }
-
-  const slug = segments.at(-1);
-  const html = categoryTemplate(slugToDisplayName(slug));
-
-  await fs.mkdir(directory, { recursive: true });
-  await fs.writeFile(indexPath, html);
-  console.log(`Created ${path.relative(process.cwd(), indexPath)}`);
 }
 
 async function listDirectories(root) {
@@ -204,29 +175,10 @@ function readMeta(content, name) {
   return content.match(new RegExp(`<meta\\s+name="${name}"\\s+content="([^"]*)"`, "i"))?.[1] ?? null;
 }
 
-async function checkConsistency({ fix = false } = {}) {
+async function checkConsistency() {
   const directories = await listDirectories(pagesRoot);
   const htmlFiles = await listHtmlFiles(pagesRoot);
   const issues = [];
-  const createdIndexes = [];
-
-  const indexPaths = new Set(htmlFiles.map((filePath) => filePath.toLowerCase()));
-  const missingIndexDirectories = directories.filter((directory) => !indexPaths.has(path.join(directory.path, "index.html").toLowerCase()));
-
-  if (fix) {
-    for (const directory of missingIndexDirectories) {
-      const relativePath = path.relative(pagesRoot, directory.path);
-      const slug = relativePath.split(path.sep).at(-1);
-      const indexPath = path.join(directory.path, "index.html");
-
-      await fs.writeFile(indexPath, categoryTemplate(slugToDisplayName(slug)));
-      createdIndexes.push(path.relative(process.cwd(), indexPath));
-    }
-  } else {
-    for (const directory of missingIndexDirectories) {
-      issues.push(`missing category index: ${directory.relativePath}/index.html`);
-    }
-  }
 
   for (const directory of directories) {
     if (!segmentPattern.test(directory.name)) {
@@ -235,9 +187,8 @@ async function checkConsistency({ fix = false } = {}) {
   }
 
   const homeHtml = await fs.readFile(path.resolve("index.html"), "utf8");
-  const homeType = readMeta(homeHtml, "page-type");
 
-  if (homeType !== "home") {
+  if (readMeta(homeHtml, "page-type") !== "home") {
     issues.push("index.html must declare page-type=home");
   }
 
@@ -256,21 +207,25 @@ async function checkConsistency({ fix = false } = {}) {
       issues.push(`unknown page-type "${pageType}": ${relativePath}`);
       continue;
     }
+    if (GENERATED_PAGE_TYPES.has(pageType)) {
+      issues.push(`generated page-type "${pageType}" must not be authored: ${relativePath}`);
+      continue;
+    }
+    if (fileName.toLowerCase() === "index.html") {
+      issues.push(`obsolete authored category index: ${relativePath}`);
+      continue;
+    }
     if (!segmentPattern.test(slug)) {
       issues.push(`non-kebab-case page slug: ${relativePath}`);
     }
+    if (pageType === "post") {
+      const createdDate = readMeta(html, "createdDate");
 
-    if (fileName.toLowerCase() === "index.html" && pageType !== "category") {
-      issues.push(`category index must declare page-type=category: ${relativePath}`);
-    }
-    if (pageType === "category" && fileName.toLowerCase() !== "index.html") {
-      issues.push(`category pages must be named index.html: ${relativePath}`);
-    }
-    if (pageType === "category" && !readMeta(html, "title")) {
-      issues.push(`category index missing title: ${relativePath}`);
-    }
-    if (pageType === "post" && !readMeta(html, "createdDate")) {
-      issues.push(`post missing createdDate: ${relativePath}`);
+      if (!createdDate) {
+        issues.push(`post missing createdDate: ${relativePath}`);
+      } else if (!datePattern.test(createdDate)) {
+        issues.push(`post has invalid createdDate "${createdDate}": ${relativePath}`);
+      }
     }
   }
 
@@ -279,21 +234,18 @@ async function checkConsistency({ fix = false } = {}) {
 
   console.log(message);
 
-  if (createdIndexes.length > 0) {
-    console.log(
-      `\nCreated category indexes:\n\n${createdIndexes.map((filePath) => `  ${filePath}`).join("\n")}\n\nPlease write introductions for these category pages.`,
-    );
-  }
-
-  return issues.length === 0 && createdIndexes.length >= 0;
+  return issues.length === 0;
 }
 
 async function main() {
   const args = process.argv.slice(2);
 
   if (args.includes("--check")) {
-    const fix = args.includes("--fix");
-    const ok = await checkConsistency({ fix });
+    if (args.includes("--fix")) {
+      console.log("No automatic fixes are available for filesystem categories.");
+    }
+
+    const ok = await checkConsistency();
 
     process.exitCode = ok ? 0 : 1;
     return;
@@ -307,11 +259,7 @@ async function main() {
     return;
   }
 
-  if (type === "category") {
-    await createCategory(target);
-  } else {
-    await createPage(type, target);
-  }
+  await createPage(type, target);
 }
 
 main().catch((error) => {
