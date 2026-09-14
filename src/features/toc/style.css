@@ -1,29 +1,29 @@
-#toc {
-  position: fixed;
-  left: 90%;
-  top: 50%;
-  transform: translate(-50%, -50%);
-  width: calc(20vw);
-  max-height: calc(100vh - 2rem);
-  overflow-y: auto;
+.toc-title {
+  margin: 0 0 var(--space-3);
+  color: var(--color-text-muted);
+  font-size: 0.76rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
 }
 
 #toc a {
   --toc-depth: 0;
 
   display: block;
-  position: relative;
-  padding-left: calc(10px + var(--toc-depth) * 1em);
-  color: inherit;
+  padding: 0.28rem 0 0.28rem calc(var(--toc-depth) * 0.85rem);
+  color: var(--color-text-muted);
+  font-size: 0.82rem;
+  line-height: 1.5;
   text-decoration: none;
-  font-size: calc(1rem - 4px);
   overflow-wrap: anywhere;
 }
 
-#toc a::before {
-  content: "•";
-  position: absolute;
-  left: calc(var(--toc-depth) * 1em);
+#toc a:hover,
+#toc a:focus-visible {
+  color: var(--color-text);
+  text-decoration: underline;
+  text-underline-offset: 3px;
 }
 
 #toc a[data-level="3"] {
@@ -40,14 +40,4 @@
 
 #toc a[data-level="6"] {
   --toc-depth: 4;
-}
-
-#toc a:hover {
-  text-decoration: underline;
-}
-
-@media (width <= 1000px) {
-  #toc {
-    display: none;
-  }
 }

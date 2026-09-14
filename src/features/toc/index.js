@@ -41,8 +41,12 @@ export function activate({ content }) {
 
   const usedIds = new Set(["toc", ...[...document.querySelectorAll("[id]")].map((element) => element.id)]);
   const toc = document.createElement("aside");
+  const title = document.createElement("p");
 
   toc.id = "toc";
+  title.className = "toc-title";
+  title.textContent = "On this page";
+  toc.append(title);
 
   for (const heading of headings) {
     ensureHeadingId(heading, usedIds);

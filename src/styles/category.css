@@ -1,31 +1,56 @@
+#content > header {
+  margin-bottom: var(--space-5);
+  text-align: left;
+}
+
 #children h2 {
-  margin-top: 2rem;
+  margin: 2rem 0 0.5rem;
+  padding-bottom: 0.35rem;
+  border-bottom: 1px solid var(--color-border);
+  color: var(--color-text-muted);
+  font-size: 0.78rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
 }
 
 .category-listing {
   display: flex;
   flex-direction: column;
-  gap: 0.25rem;
 }
 
 .category-entry {
   display: flex;
   align-items: baseline;
-  gap: 0.5rem;
-  color: inherit;
+  gap: var(--space-3);
+  padding: 0.45rem 0.6rem;
+  border-radius: var(--radius-sm);
+  color: var(--color-text);
   text-decoration: none;
-  width: max-content;
 }
 
 .category-entry:hover {
-  text-decoration: underline;
+  background-color: var(--color-surface-muted);
+  text-decoration: none;
 }
 
 .category-entry time {
+  flex: none;
+  width: 7.5rem;
+  color: var(--color-text-muted);
+  font-size: 0.8rem;
   font-variant-numeric: tabular-nums;
 }
 
 .category-entry-directory {
-  color: #005fcc;
+  color: var(--color-accent);
   font-weight: 600;
+}
+
+.category-entry-page span {
+  border-bottom: 1px solid transparent;
+}
+
+.category-entry-page:hover span {
+  border-bottom-color: currentcolor;
 }

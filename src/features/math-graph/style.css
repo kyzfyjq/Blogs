@@ -1,5 +1,6 @@
 math-graph {
   display: block;
+  margin: 1.5rem 0;
   overflow-x: auto;
   text-align: center;
 }

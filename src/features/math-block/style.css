@@ -1,46 +1,63 @@
 math-block {
+  --math-block-accent: var(--color-border);
+  --math-block-bg: var(--color-surface);
+
   display: block;
-  padding: 10px;
-  border: 1.5px solid black;
+  margin: 1.5rem 0;
+  padding: 1rem 1.25rem;
+  border: 1px solid var(--color-border);
+  border-left: 3px solid var(--math-block-accent);
+  border-radius: var(--radius-md);
+  background-color: var(--math-block-bg);
 }
 
 math-block > b {
-  display: inline;
-  font-weight: 700;
+  display: block;
+  margin-bottom: 0.4rem;
+  font-weight: 650;
 }
 
 math-block.theorem {
-  background-color: #e8e5f0;
+  --math-block-accent: #7c5cbf;
+  --math-block-bg: #f8f6fc;
 }
 
 math-block.proof {
-  background-color: #dbd1ed;
+  --math-block-accent: #8b5cf6;
+  --math-block-bg: #f8f6fc;
 }
 
 math-block.definition {
-  background-color: #e8f0ec;
+  --math-block-accent: #2f7d63;
+  --math-block-bg: #f4f9f7;
 }
 
 math-block.lemma {
-  background-color: #ecefee;
+  --math-block-accent: #b08a00;
+  --math-block-bg: #f1ebae;
 }
 
 math-block.proposition {
-  background-color: #e5e4ef;
+  --math-block-accent: #6f6bb0;
+  --math-block-bg: #f6f5fb;
 }
 
 math-block.corollary {
-  background-color: #e5eef1;
+  --math-block-accent: #3a7d95;
+  --math-block-bg: #f3f8fa;
 }
 
 math-block.example {
-  background-color: #f3ece6;
+  --math-block-accent: #a06a3f;
+  --math-block-bg: #fbf7f3;
 }
 
 math-block.remark {
-  background-color: #f1f1eb;
+  --math-block-accent: #7b7f87;
+  --math-block-bg: #f8f8f7;
 }
 
 math-block.problem {
-  background-color: #f3e7e7;
+  --math-block-accent: #a05a5a;
+  --math-block-bg: #fbf5f5;
 }
