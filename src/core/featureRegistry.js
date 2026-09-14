@@ -36,6 +36,18 @@ export const FEATURES = [
       return import("../features/math-graph/index.js");
     },
   }),
+
+  new Feature({
+    name: "image-block",
+
+    detect({ content }) {
+      return content?.querySelector("image-block") !== null;
+    },
+
+    load() {
+      return import("../features/image-block/index.js");
+    },
+  }),
 ];
 
 export function detectActiveFeatures(context) {
