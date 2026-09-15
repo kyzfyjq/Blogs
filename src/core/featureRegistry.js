@@ -48,6 +48,18 @@ export const FEATURES = [
       return import("../features/image-block/index.js");
     },
   }),
+
+  new Feature({
+    name: "code-block",
+
+    detect({ content }) {
+      return content?.querySelector(".code-block") !== null;
+    },
+
+    load() {
+      return import("../features/code-block/index.js");
+    },
+  }),
 ];
 
 export function detectActiveFeatures(context) {

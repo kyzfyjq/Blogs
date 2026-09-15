@@ -98,6 +98,10 @@ export async function buildSiteModel() {
   const directoriesByKey = new Map();
 
   function ensureDirectory(categoryPath) {
+    if (categoryPath.length === 0) {
+      return null;
+    }
+
     const key = categoryPath.join("/");
     let directory = directoriesByKey.get(key);
 

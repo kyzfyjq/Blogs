@@ -5,6 +5,7 @@ import { defineConfig } from "vite";
 import { globSync } from "node:fs";
 
 import { SITE_BASE } from "./src/config/site.js";
+import { highlightCodeBlocks } from "./scripts/codeHighlight.js";
 import { MATHJAX_CONFIG, MATHJAX_SOURCE_URL, htmlHasTex } from "./src/core/mathjax.js";
 import { getPageTypeConfig } from "./src/core/pageTypes.js";
 import {
@@ -48,6 +49,8 @@ function pageTypePlugin(getSiteModel) {
       order: "pre",
 
       async handler(html, context) {
+        html = await highlightCodeBlocks(html);
+
         const pageType = readPageType(html);
         const pageTypeConfig = getPageTypeConfig(pageType);
 
@@ -181,6 +184,9 @@ export default defineConfig(async ({ command }) => {
 
   return {
     base: SITE_BASE,
+    css: {
+      devSourcemap: true,
+    },
     plugins: [vue(), pageTypePlugin(getSiteModel), generatedSitePlugin({ command, model })],
     build: {
       rollupOptions: {

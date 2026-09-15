@@ -1,5 +1,7 @@
+// Page layout and structural feature CSS are eager; interactive feature JS stays lazy.
 import "../styles/base.css";
 import "../styles/post.css";
+import "../features/code-block/style.css";
 import "../features/image-block/style.css";
 import "../features/math-block/style.css";
 import "../features/math-graph/style.css";
