@@ -12,6 +12,7 @@ import rust from "shiki/langs/rust.mjs";
 import shellscript from "shiki/langs/shellscript.mjs";
 import typescript from "shiki/langs/typescript.mjs";
 import githubLight from "shiki/themes/github-light.mjs";
+import { findCodeBlocks } from "./codeBlocks.js";
 
 const LANGUAGE_ALIASES = {
   js: "javascript",
@@ -45,7 +46,6 @@ const LANGUAGE_LABELS = {
   rust: "Rust",
 };
 
-const CODE_BLOCK_PATTERN = /<pre(?:\s[^>]*)?>\s*<code([^>]*)>([\s\S]*?)<\/code>\s*<\/pre>/gi;
 const CLASS_PATTERN = /class="([^"]*)"/i;
 const LANGUAGE_CLASS_PATTERN = /(?:^|\s)language-([\w-]+)/i;
 
@@ -67,6 +67,12 @@ function decodeHtmlEntities(code) {
   return load(`<textarea>${code}</textarea>`)("textarea").text();
 }
 
+function normalizeCodeText(rawCode) {
+  // Remove at most one structural newline/indent before the closing code tag.
+  // Every other leading, internal, and trailing whitespace character is preserved.
+  return decodeHtmlEntities(rawCode).replace(/\n[ \t]*$/, "");
+}
+
 function escapeHtml(value) {
   return String(value).replaceAll("&", "&amp;").replaceAll("<", "&lt;").replaceAll(">", "&gt;").replaceAll('"', "&quot;");
 }
@@ -80,7 +86,7 @@ async function renderCodeBlock(highlighter, { attributes, rawCode }) {
   const languageMatch = classMatch?.[1].match(LANGUAGE_CLASS_PATTERN);
   const requestedLanguage = languageMatch?.[1]?.toLowerCase();
   const language = requestedLanguage ? LANGUAGE_ALIASES[requestedLanguage] : null;
-  const code = decodeHtmlEntities(rawCode);
+  const code = normalizeCodeText(rawCode);
   let highlightedCode;
 
   if (language) {
@@ -94,7 +100,7 @@ async function renderCodeBlock(highlighter, { attributes, rawCode }) {
       highlightedCode = `<pre><code>${escapeHtml(code)}</code></pre>`;
     }
   } else {
-    highlightedCode = `<pre><code${attributes}>${rawCode}</code></pre>`;
+    highlightedCode = `<pre><code${attributes}>${escapeHtml(code)}</code></pre>`;
   }
 
   const label = language ? `<span class="code-block-language">${LANGUAGE_LABELS[language]}</span>` : "<span></span>";
@@ -106,20 +112,20 @@ async function renderCodeBlock(highlighter, { attributes, rawCode }) {
 }
 
 export async function highlightCodeBlocks(html) {
-  const matches = [...html.matchAll(CODE_BLOCK_PATTERN)];
+  const codeBlocks = findCodeBlocks(html);
 
-  if (matches.length === 0) {
+  if (codeBlocks.length === 0) {
     return html;
   }
 
   const highlighter = await getHighlighter();
   let result = html;
 
-  for (const match of matches.reverse()) {
-    const [fullMatch, attributes, rawCode] = match;
+  for (const codeBlock of codeBlocks.reverse()) {
+    const { end, attributes, index, rawCode } = codeBlock;
     const replacement = await renderCodeBlock(highlighter, { attributes, rawCode });
 
-    result = `${result.slice(0, match.index)}${replacement}${result.slice(match.index + fullMatch.length)}`;
+    result = `${result.slice(0, index)}${replacement}${result.slice(end)}`;
   }
 
   return result;

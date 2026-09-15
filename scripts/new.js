@@ -2,6 +2,7 @@ import fs from "node:fs/promises";
 import path from "node:path";
 
 import { GENERATED_PAGE_TYPES, getPageTypeConfig } from "../src/core/pageTypes.js";
+import { findCodeBlocks, hasPrettierIgnore } from "./codeBlocks.js";
 
 const pagesRoot = path.resolve("src/pages");
 const segmentPattern = /^[a-z0-9]+(?:-[a-z0-9]+)*$/;
@@ -179,6 +180,7 @@ async function checkConsistency() {
   const directories = await listDirectories(pagesRoot);
   const htmlFiles = await listHtmlFiles(pagesRoot);
   const issues = [];
+  const warnings = [];
 
   for (const directory of directories) {
     if (!segmentPattern.test(directory.name)) {
@@ -227,12 +229,24 @@ async function checkConsistency() {
         issues.push(`post has invalid createdDate "${createdDate}": ${relativePath}`);
       }
     }
+
+    for (const codeBlock of findCodeBlocks(html)) {
+      if (!hasPrettierIgnore(html, codeBlock.index)) {
+        const line = html.slice(0, codeBlock.index).split("\n").length;
+
+        warnings.push(`code block should be preceded by <!-- prettier-ignore -->: ${relativePath}:${line}`);
+      }
+    }
   }
 
   const message =
     issues.length > 0 ? `Found ${issues.length} issue(s):\n${issues.map((issue) => `  - ${issue}`).join("\n")}` : "No consistency issues found.";
 
   console.log(message);
+
+  if (warnings.length > 0) {
+    console.log(`\nCode block diagnostics:\n${warnings.map((warning) => `  - ${warning}`).join("\n")}`);
+  }
 
   return issues.length === 0;
 }
