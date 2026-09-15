@@ -14,10 +14,13 @@
   --color-accent: #2563eb;
   --color-accent-soft: rgb(37 99 235 / 9%);
   --color-code-bg: #f6f8fa;
+  --color-header-bg: rgb(255 255 255 / 88%);
+  --color-backdrop: rgb(15 23 42 / 40%);
   --header-height: 60px;
   --sidebar-width: 16.5rem;
   --toc-width: 13.5rem;
   --content-width: 50rem;
+  --date-column-width: 7.5rem;
   --radius-sm: 6px;
   --radius-md: 10px;
   --space-1: 0.25rem;
@@ -103,7 +106,7 @@ header {
   grid-column: 1 / -1;
   height: var(--header-height);
   border-bottom: 1px solid var(--color-border);
-  background-color: rgb(255 255 255 / 88%);
+  background-color: var(--color-header-bg);
   backdrop-filter: blur(8px);
 }
 
@@ -332,7 +335,7 @@ body:has(#toc) #layout {
     position: fixed;
     inset: var(--header-height) 0 0;
     z-index: 35;
-    background-color: rgb(15 23 42 / 40%);
+    background-color: var(--color-backdrop);
   }
 
   body.sidebar-open #sidebar-backdrop {

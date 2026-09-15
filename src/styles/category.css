@@ -36,7 +36,7 @@
 
 .category-entry time {
   flex: none;
-  width: 7.5rem;
+  width: var(--date-column-width);
   color: var(--color-text-muted);
   font-size: 0.8rem;
   font-variant-numeric: tabular-nums;
