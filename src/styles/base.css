@@ -16,10 +16,10 @@
   --color-code-bg: #f6f8fa;
   --color-header-bg: rgb(255 255 255 / 88%);
   --color-backdrop: rgb(15 23 42 / 40%);
-  --header-height: 60px;
+  --header-height: 50px;
   --sidebar-width: 16.5rem;
   --toc-width: 13.5rem;
-  --content-width: 50rem;
+  --content-width: 60rem;
   --date-column-width: 7.5rem;
   --radius-sm: 6px;
   --radius-md: 10px;
